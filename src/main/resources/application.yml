@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+words:
+  sourceDir: F:/sourceDir
+  targetDir: F:/targetDir
