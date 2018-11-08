@@ -14,6 +14,8 @@ public class SysProp  implements InitializingBean{
     private String sourceDir;
     @Value("${words.targetDir}")
     private String taregtDir;
+    @Value("${words.excelDir}")
+    private String excelDir;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -23,6 +25,9 @@ public class SysProp  implements InitializingBean{
         if (taregtDir == null) {
             taregtDir = "F:/targetDir";
         }
+        if (excelDir == null) {
+            excelDir = "F:/excelDir";
+        }
         File source = new File(sourceDir);
         if (!source.exists()) {
             source.mkdirs();
@@ -30,6 +35,10 @@ public class SysProp  implements InitializingBean{
         File target = new File(taregtDir);
         if (!target.exists()) {
             target.mkdirs();
+        }
+        File excel = new File(excelDir);
+        if (!excel.exists()) {
+            excel.mkdirs();
         }
     }
 }

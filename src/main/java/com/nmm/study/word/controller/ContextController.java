@@ -3,6 +3,7 @@ package com.nmm.study.word.controller;
 import com.nmm.study.word.config.SysProp;
 import com.nmm.study.word.mode.OrderInfo;
 import com.nmm.study.word.service.AipService;
+import com.nmm.study.word.service.ExcelService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,6 +34,8 @@ public class ContextController {
     //商品发货匹配规则
     private Pattern product = Pattern.compile("\\d+\\.?\\d+发货");
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private ExcelService excelService;
 
     /**
      * 将源目标文件内容转为相关文字内容。
@@ -39,7 +43,7 @@ public class ContextController {
      */
     @ResponseBody
     @RequestMapping("/words/convert")
-    public String convertPic2Word(){
+    public String convertPic2Word() throws IOException {
         File source = new File(sysProp.getSourceDir());
         File target = new File(sysProp.getTaregtDir());
         File[] sourcePics = source.listFiles();
@@ -75,7 +79,7 @@ public class ContextController {
                         info.setOrderNo(word.substring(word.indexOf(":")+1));
                     }
                     if (word.contains("创建时间")) {
-                        info.setCreateTime(word.substring(word.indexOf(":")+1));
+                        info.setCreateTime(word.substring(word.indexOf(":")+1).substring(0,10));
                     }
                 }
                 pic.renameTo(new File(target,name));
@@ -84,6 +88,7 @@ public class ContextController {
                 logger.info("不支持的文件：" + name);
             }
         }
+        excelService.exportInfoToExcel(infos);
         logger.info("识别结果：" + infos);
         return "成功了";
     }

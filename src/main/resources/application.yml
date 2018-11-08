@@ -2,5 +2,6 @@ server:
   port: 8080
 
 words:
-  sourceDir: F:/sourceDir
-  targetDir: F:/targetDir
+  sourceDir: D:/orders/sourceDir
+  targetDir: D:/orders/targetDir
+  excelDir: D:/orders/excels
